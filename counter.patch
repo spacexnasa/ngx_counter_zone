@@ -1,0 +1,11 @@
+diff -Naur nginx-0.9.4/src/http/ngx_http_request.h nginx-0.9.4.new/src/http/ngx_http_request.h
+--- src/http/ngx_http_request.h	2011-01-20 02:37:58.000000000 -0800
++++ src/http/ngx_http_request.h	2011-02-10 10:45:48.000000000 -0800
+@@ -483,6 +483,7 @@
+      */
+     unsigned                          limit_zone_set:1;
+     unsigned                          limit_req_set:1;
++    unsigned                          counter_zone_set:1;
+ 
+ #if 0
+     unsigned                          cacheable:1;

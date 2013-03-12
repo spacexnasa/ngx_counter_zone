@@ -1,0 +1,40 @@
+NGINX Counter module
+created on a base of ngx_http_limit_conn_module.c and ngx_http_limit_req_module.c modules
+
+Gives realtime counters using NGINX config
+
+EXAMPLE:
+http {
+    # allocating 10Mb for counetr with name "host_counter"
+    # and hashing function by $client_ip
+    counter_zone  host_counter  $client_ip  10m;
+
+    # same for "hit_counter"
+    counter_zone  hit_counter   $client_ip  10m;
+ 
+    ...
+ 
+    server {
+ 
+        ...
+ 
+        location ^~ /some/stats/ {
+            counter   host_counter  1; #increase host_counter by one
+        }
+
+        location ^~ /some/stats/hit/ {
+            counter   hit_counter  3; #increase hit_counter by some other value
+        }
+
+        location ^~ /some/other/stats/ {
+            counter   host_counter  $inc_var; #increase counter by some variable atoi
+        }
+
+        location ~* /stats/counter_get/(?P<id>.*)$ {
+            counter_get host_counter $counter $id;
+            return 200 $counter;
+        }
+
+        location ~* /stats/counter_drop/(?P<id>.*)$ {
+            counter_drop host_counter $id;
+        }
